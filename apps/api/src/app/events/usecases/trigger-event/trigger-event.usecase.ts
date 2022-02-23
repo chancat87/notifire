@@ -66,6 +66,7 @@ export class TriggerEvent {
           },
         })
       )
+      // eslint-disable-next-line no-console
       .catch((e) => console.error(e));
 
     const template = await this.notificationTemplateRepository.findByTriggerIdentifier(
@@ -445,6 +446,7 @@ export class TriggerEvent {
     application: ApplicationEntity
   ) {
     const email = command.payload.$email || subscriber.email;
+
     Sentry.addBreadcrumb({
       message: 'Sending Email',
     });
@@ -457,6 +459,7 @@ export class TriggerEvent {
       content = [...emailChannel.template.content] as IEmailBlock[];
       for (const block of content) {
         const contentService = new ContentService();
+
         block.content = contentService.replaceVariables(block.content, command.payload);
         block.url = contentService.replaceVariables(block.url, command.payload);
       }

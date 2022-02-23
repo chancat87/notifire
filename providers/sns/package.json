@@ -1,6 +1,6 @@
 {
   "name": "@notifire/sns",
-  "version": "0.2.5",
+  "version": "0.3.6-alpha.0",
   "description": "A sns wrapper for notifire",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -21,7 +21,7 @@
     "test:unit": "jest src",
     "watch:build": "tsc -p tsconfig.json -w",
     "watch:test": "jest src --watch",
-    "reset-hard": "git clean -dfx && git reset --hard && yarn",
+    "reset-hard": "git clean -dfx && git reset --hard && pnpm install",
     "prepare-release": "run-s reset-hard test"
   },
   "publishConfig": {
@@ -32,11 +32,11 @@
   },
   "dependencies": {
     "@aws-sdk/client-sns": "^3.39.0",
-    "@notifire/core": "^0.2.5"
+    "@notifire/core": "^0.3.6-alpha.0"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "27.4.0",
     "codecov": "^3.5.0",
     "cspell": "^4.1.0",
     "cz-conventional-changelog": "^3.3.0",
@@ -71,11 +71,6 @@
     "files": [
       "!build/module/**"
     ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
   },
   "prettier": {
     "singleQuote": true

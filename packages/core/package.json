@@ -1,6 +1,6 @@
 {
   "name": "@notifire/core",
-  "version": "0.2.5",
+  "version": "0.3.6-alpha.0",
   "description": "Notification Management Framework",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -13,6 +13,7 @@
     "build": "run-p build:*",
     "build:main": "tsc -p tsconfig.json",
     "build:module": "tsc -p tsconfig.module.json",
+    "lint": "pnpm test:lint",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
@@ -29,7 +30,7 @@
     "doc:html": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --out build/docs",
     "doc:json": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --json build/docs/typedoc.json",
     "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
-    "reset-hard": "git clean -dfx && git reset --hard && yarn",
+    "reset-hard": "git clean -dfx && git reset --hard && pnpm install",
     "prepare-release": "run-s reset-hard test"
   },
   "publishConfig": {
@@ -45,17 +46,18 @@
   },
   "devDependencies": {
     "@sendgrid/mail": "^7.4.6",
-    "codecov": "^3.5.0",
-    "@types/lodash.merge": "^4.6.6",
+    "@types/jest": "27.4.0",
     "@types/lodash.get": "^4.4.6",
+    "@types/lodash.merge": "^4.6.6",
+    "@types/node": "^14.6.0",
+    "codecov": "^3.5.0",
     "cz-conventional-changelog": "^3.3.0",
+    "jest": "^27.0.6",
     "npm-run-all": "^4.1.5",
     "open-cli": "^6.0.1",
-    "typedoc": "^0.19.0",
-    "@types/jest": "^27.0.1",
-    "@types/node": "^14.6.0",
+    "run-p": "0.0.0",
     "ts-jest": "^27.0.5",
-    "jest": "^27.0.6"
+    "typedoc": "^0.19.0"
   },
   "files": [
     "build/main",
@@ -66,11 +68,6 @@
     "LICENSE",
     "README.md"
   ],
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "prettier": {
     "singleQuote": true
   },

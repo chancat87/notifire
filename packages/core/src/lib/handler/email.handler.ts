@@ -1,6 +1,10 @@
 import { compileTemplate } from '../content/content.engine';
 import { IEmailProvider } from '../provider/provider.interface';
-import { IMessage, ITriggerPayload } from '../template/template.interface';
+import {
+  ChannelTypeEnum,
+  IMessage,
+  ITriggerPayload,
+} from '../template/template.interface';
 import { ITheme } from '../theme/theme.interface';
 
 export class EmailHandler {
@@ -11,6 +15,12 @@ export class EmailHandler {
   ) {}
 
   async send(data: ITriggerPayload) {
+    const attachments = data.$attachments?.filter((item) =>
+      item.channels?.length
+        ? item.channels?.includes(ChannelTypeEnum.EMAIL)
+        : true
+    );
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const branding: any = data?.$branding || {};
 
@@ -24,9 +34,26 @@ export class EmailHandler {
     if (typeof this.message.template === 'string') {
       html = compileTemplate(this.message.template, templatePayload);
     } else {
-      html = await this.message.template(templatePayload);
+      html = compileTemplate(
+        await this.message.template(templatePayload),
+        templatePayload
+      );
     }
-    const subject = compileTemplate(this.message.subject || '', data);
+
+    let subjectParsed;
+
+    if (typeof this.message.subject === 'string') {
+      subjectParsed = this.message.subject || '';
+    } else if (typeof this.message.subject === 'function') {
+      subjectParsed = this.message.subject(data);
+    } else {
+      throw new Error(
+        `Subject must be either of 'string' or 'function' type. Type ${typeof this
+          .message.subject} passed`
+      );
+    }
+
+    const subject = compileTemplate(subjectParsed, data);
 
     if (this.theme?.emailTemplate?.getEmailLayout()) {
       const themeVariables =
@@ -45,10 +72,11 @@ export class EmailHandler {
       );
     }
 
-    await this.provider.sendMessage({
+    return await this.provider.sendMessage({
       to: data.$email,
       subject,
       html,
+      attachments,
     });
   }
 }

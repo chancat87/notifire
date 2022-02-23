@@ -1,6 +1,6 @@
 {
   "name": "@notifire/mailjet",
-  "version": "0.2.5",
+  "version": "0.3.6-alpha.0",
   "description": "A mailjet wrapper for notifire",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -21,7 +21,7 @@
     "test:unit": "jest src",
     "watch:build": "tsc -p tsconfig.json -w",
     "watch:test": "jest src --watch",
-    "reset-hard": "git clean -dfx && git reset --hard && yarn",
+    "reset-hard": "git clean -dfx && git reset --hard && pnpm install",
     "prepare-release": "run-s reset-hard test"
   },
   "publishConfig": {
@@ -31,12 +31,12 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@notifire/core": "^0.2.5",
+    "@notifire/core": "^0.3.6-alpha.0",
     "node-mailjet": "^3.3.4"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "27.4.0",
     "@types/node-mailjet": "^3.3.7",
     "codecov": "^3.5.0",
     "cspell": "^4.1.0",
@@ -72,11 +72,6 @@
     "files": [
       "!build/module/**"
     ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
   },
   "prettier": {
     "singleQuote": true

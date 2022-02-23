@@ -32,7 +32,7 @@ if (process.env.SENTRY_DSN) {
 
 // Validate the ENV variables after launching SENTRY, so missing variables will report to sentry
 validateEnv();
-//
+
 export async function bootstrap(expressApp?): Promise<INestApplication> {
   let app;
   if (expressApp) {
@@ -47,10 +47,9 @@ export async function bootstrap(expressApp?): Promise<INestApplication> {
   }
 
   app.enableCors({
-    origin:
-      process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test'
-        ? '*'
-        : [process.env.FRONT_BASE_URL, process.env.WIDGET_BASE_URL],
+    origin: ['dev', 'test', 'local'].includes(process.env.NODE_ENV)
+      ? '*'
+      : [process.env.FRONT_BASE_URL, process.env.WIDGET_BASE_URL],
     preflightContinue: false,
     allowedHeaders: ['Content-Type', 'Authorization', 'sentry-trace'],
     methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -79,6 +78,7 @@ export async function bootstrap(expressApp?): Promise<INestApplication> {
       .setVersion('1.0')
       .build();
     const document = SwaggerModule.createDocument(app, options);
+
     SwaggerModule.setup('api', app, document);
   }
 
@@ -89,5 +89,6 @@ export async function bootstrap(expressApp?): Promise<INestApplication> {
   }
 
   Logger.log(`Started application in NODE_ENV=${process.env.NODE_ENV} port ${process.env.PORT}`);
+
   return app;
 }

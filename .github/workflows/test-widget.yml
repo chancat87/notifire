@@ -33,7 +33,7 @@ jobs:
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
       - uses: actions/setup-node@v2
         with:
-          node-version: '15.11.0'
+          node-version: '16.13.0'
       - name: Start Redis
         uses: supercharge/redis-github-action@1.2.0
 
@@ -42,34 +42,35 @@ jobs:
         with:
           mongodb-version: 4.2.8
 
-      - name: restore lerna
-        uses: actions/cache@master
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
         with:
-          path: |
-            node_modules
-            **/node_modules
-            /home/runner/.cache/Cypress
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
 
-      # Runs a single command using the runners shell
-      - name: Install project dependencies
-        run: yarn install
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.0.2
+          run_install: true
 
-      # Runs a single command using the runners shell
-      - name: Bootstrap
-        run: yarn run bootstrap
+      - uses: mansagroup/nrwl-nx-action@v2
+        with:
+          targets: lint
+          projects: "@notifire/widget"
 
       # Runs a single command using the runners shell
       - name: Build
-        run: CI='' yarn run build:widget
+        run: CI='' pnpm build:widget
 
       # Runs a single command using the runners shell
       - name: Start Client
-        run: yarn run start:widget &
+        run: pnpm start:widget:test &
 
       # Runs a single command using the runners shell
       - name: Start WS
-        run: yarn run start:ws &
+        run: pnpm start:ws:test &
 
       # Runs a single command using the runners shell
       - name: Wait for WS
@@ -82,9 +83,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           working-directory: apps/widget
-          start: yarn run start:api
+          start: pnpm start:api
           wait-on: http://localhost:3500/v1/health-check
           record: true
           browser: chrome
+          install: false
           headless: true
 

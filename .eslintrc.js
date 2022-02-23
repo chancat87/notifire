@@ -24,6 +24,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/lines-between-class-members': 'off',
     'react/jsx-wrap-multilines': 'off',
+    'multiline-comment-style': ['error', 'starred-block'],
     'promise/catch-or-return': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-unused-expressions': 'off',
@@ -36,6 +37,7 @@ module.exports = {
     'no-return-await': 'off',
     'no-await-in-loop': 'off',
     'no-continue': 'off',
+    'no-console': 'error',
     'no-prototype-builtins': 'off',
     'import/no-cycle': 'off',
     'class-methods-use-this': 'off',
@@ -58,6 +60,28 @@ module.exports = {
       'error',
       {
         patterns: ['@notifire/shared/*', '@notifire/dal/*', '!import2/good'],
+      },
+    ],
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: ['const', 'let', 'var'], next: ['*'] },
+      { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['if', 'for'] },
+      { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] },
+      { blankLine: 'always', prev: '*', next: 'return' },
+     ],
+    '@typescript-eslint/naming-convention': [
+      'error',
+      { selector: 'class', format: ['PascalCase'] },
+      { selector: 'variableLike', format: ['camelCase', 'UPPER_CASE'], leadingUnderscore: 'allow' },
+      {
+        selector: 'interface',
+        format: ['PascalCase'],
+        prefix: ['I'],
+      },
+      {
+        selector: ['function'],
+        format: ['camelCase'],
+        leadingUnderscore: 'allow',
       },
     ],
   },

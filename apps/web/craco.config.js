@@ -8,11 +8,10 @@ module.exports = {
   },
   plugins: [
     { plugin: BabelRcPlugin },
-
     {
       plugin: CracoAntDesignPlugin,
       options: {
-        customizeThemeLessPath: path.join(__dirname, 'src/styles/index.less'),
+        customizeThemeLessPath: path.join(__dirname, 'src/legacy/styles/index.less'),
       },
     },
   ],

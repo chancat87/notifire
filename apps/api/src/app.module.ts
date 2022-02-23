@@ -22,7 +22,7 @@ import { InvitesModule } from './app/invites/invites.module';
 import { ContentTemplatesModule } from './app/content-templates/content-templates.module';
 import { QueueService } from './app/shared/services/queue';
 
-const modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [
+const modules: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [
   OrganizationModule,
   SharedModule,
   UserModule,
@@ -62,10 +62,6 @@ if (process.env.NODE_ENV === 'test') {
   controllers: [],
   providers,
 })
-export class AppModule implements OnModuleInit {
+export class AppModule {
   constructor(private queueService: QueueService) {}
-
-  async onModuleInit() {
-    //
-  }
 }

@@ -13,10 +13,10 @@ Providers allow us to handle message delivery over multiple channels. We have mu
 
 ## Initialization
 
-To setup the repository, be sure to install the required packages. 
+To setup the repository, run the initial setup command: 
 
 ```zsh
-yarn install
+npm run setup:project
 ```
 
 At the root of the project build the `core` package to get started.
@@ -30,7 +30,7 @@ cd packages/core && yarn run build
 After the project is initialized creating a new provider is achievable with the following.
 
 ```zsh
-yarn run generate:provide
+yarn run generate:provider
 ```
 
 Choose the provider type.
